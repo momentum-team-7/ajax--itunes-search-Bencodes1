@@ -1,6 +1,7 @@
 const baseURL = 'https://itunes.apple.com/search?term='
 const rootElement = document.querySelector('.container')
 const form = document.querySelector('#search-form')
+const searchResults = document.querySelector('.search-results')
 
 form.addEventListener('submit', e => { 
     e.preventDefault()
@@ -8,76 +9,69 @@ form.addEventListener('submit', e => {
     search(searchInput)
 })
 
+
 let searchInput = document.querySelector("#search-bar")
 search(searchInput)
 
+// Fetch data from itunes API with search input from user
 function search(searchInput){
     let fetchURL = baseURL + searchInput + "&entity=song"
     fetch(fetchURL) 
     .then(response => response.json())
     .then(data => {
-        // console.log(data)
         console.log(data.results[2].artistName)
-        resultsTemp(data.results)
+        renderAll(data.results)
         })
 };
 
-function resultsTemp(array){
+// Takes full function returned from fetch request, returns array composed of
+//  only the variables we might use
+function renderAll(array){
     for (object of array){
 
+//      Rendering section: 
+        const mainEl = document.createElement('div')
+        mainEl.className    = 'song-card'
+        mainEl.id           = object.trackName //not sure if necessary
 
-        // elements (delete when done)
-        console.log(
-            object.artistName,              "\n", 
-            object.trackName,               "\n", 
-            object.isStreamable,            "\n", 
-            object.kind,                    "\n", 
-            object.collectionName,          "\n", 
-            object.collectionCensoredName,  "\n", 
-            object.artworkUrl100,           "\n", 
-            object.artistViewUrl,           "\n", 
-            object.previewUrl,              "\n", 
-            object.collectionViewUrl            );
+        const artistEl      = document.createElement('h2')
+        artistEl.innerText  = object.artistName 
 
+        const trackEl       = document.createElement('h3')
+        trackEl.innerText   = object.trackName
 
-        // making variables in case i need them
-        let artistName             =  object.artistName               
-        let trackName              =  object.trackName                
-        let isStreamable           =  object.isStreamable             
-        let kind                   =  object.kind                     
-        let collectionName         =  object.collectionName           
-        let collectionCensoredName =  object.collectionCensoredName   
-        let artworkUrl100          =  object.artworkUrl100            
-        let artistViewUrl          =  object.artistViewUrl            
-        let previewUrl             =  object.previewUrl              
-        let collectionViewUrl      =  object.collectionViewUrl;
+        const albumEl       = document.createElement('h4')
+        albumEl.innerText   = object.collectionName
 
-        console.log("New array for ", trackName ) 
-        const arrayTest = [
-            artistName            , 
-            trackName             ,
-            isStreamable          ,
-            kind                  ,
-            collectionName        ,
-            collectionCensoredName,
-            artworkUrl100         ,
-            artistViewUrl         ,
-            previewUrl            ,
-            collectionViewUrl     ];
+        const albumImgEl    = document.createElement('img')
+        albumImgEl.src      = object.artworkUrl100
 
-        // const array${object.trackId} = [
-                
+        mainEl.appendChild(albumImgEl)
+        mainEl.appendChild(trackEl)
+        mainEl.appendChild(artistEl)
+        mainEl.appendChild(albumEl)
 
-        }
+        searchResults.appendChild(mainEl)
+    }
 }
-
-
 
 
 
 // musicEl.classname = 'sample string'
 
-
-
-
 // let testdivcreator = document.createElement("div")
+
+
+
+        // elements (delete when done)
+        // console.log(
+        //     object.artistName,              "\n", 
+        //     object.trackName,               "\n", 
+        //     object.isStreamable,            "\n", 
+        //     object.kind,                    "\n", 
+        //     object.collectionName,          "\n", 
+        //     object.collectionCensoredName,  "\n", 
+        //     object.artworkUrl100,           "\n", 
+        //     object.artistViewUrl,           "\n", 
+        //     object.previewUrl,              "\n", 
+        //     object.collectionViewUrl            );
