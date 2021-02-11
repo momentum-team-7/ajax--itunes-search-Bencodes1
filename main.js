@@ -1,4 +1,4 @@
-const baseURL = 'https://itunes.apple.com/search?term='
+const baseURL = 'https://proxy-itunes-api.glitch.me/search?term='
 const rootElement = document.querySelector('.container')
 const form = document.querySelector('#search-form')
 const searchResults = document.querySelector('.search-results')
@@ -14,17 +14,24 @@ form.addEventListener('submit', e => {
 // Fetch data from itunes API with search input from user
 function search(){
     let searchInput = document.querySelector(".search-input").value;
-    let fetchURL = baseURL + searchInput + "&entity=song&limit=10"
+    let fetchURL = baseURL + searchInput + "&entity=song&limit=25"
     fetch(fetchURL) 
     .then(response => response.json())
     .then(data => {
-        console.log(data.results[0].artistName)
-        console.log(data.results)
-        renderAll(data.results)
+        if (data.results.length > 0){
+            renderAll(data.results)
+            console.log("what the heck man")
+        }
+        else {
+            console.log("Input check running")
+            catchInputError()
+        }
         })
     .catch(error => 
-        catchError())    
+        catchFetchError()) 
 };
+
+
 
 
 function renderAll(array){
@@ -62,7 +69,7 @@ function renderAll(array){
         mainEl.appendChild(artistEl)
         mainEl.appendChild(albumEl)
         mainEl.appendChild(playButtonEl)
-        mainEl.appendChild(samplePlayer)
+        // mainEl.appendChild(samplePlayer)
 
         searchResults.appendChild(mainEl)
 
@@ -79,16 +86,23 @@ function clearResults() {
     };
 }
 
-function catchError(){
-    const errorEl = document.createElement('div')
-    errorEl.innerText = "No results found for this query"
-    searchResults.appendChild(errorEl)
+function catchInputError(){
+    const inputErrorEl = document.createElement('div')
+    inputErrorEl.innerText = "No results found for this query"
+    searchResults.appendChild(inputErrorEl)
 }
+
+
+function catchFetchError(){
+    const fetchErrorEl = document.createElement('div')
+    fetchErrorEl.innerText = "Server Error- try again soon!"
+    searchResults.appendChild(fetchErrorEl)
+}
+
 
 function playSample(button, audioUrl){
     let audio = document.querySelector('audio')
     console.log(audio)
-    // audio.src = audioUrl
     audio.src = audioUrl
     console.log(audioUrl)
 }
