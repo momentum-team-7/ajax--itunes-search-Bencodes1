@@ -1,0 +1,64 @@
+* {
+    background-color: lightgrey;
+    color: black;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.search-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+    margin-top: 40px;
+
+}
+
+.song-card {
+    /* border: 0px;
+    border-color: purple; */
+    width: 20%;
+    margin-bottom: 48px;
+    margin-right: 12px;
+    border-color: lightblue;
+    border-width: 5px;
+    border-style: solid;
+    background-color: darkgrey;
+}
+
+h2 {
+    font-size: 12px;
+    background-color: darkgray;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: darkgray;
+}
+
+/* h4 {
+    font-size: 12px;
+} */
+
+.sample-player{
+
+    width: 300px
+    padding-top: 10px;
+    margin-top: 24px;
+    margin-left:
+}
+
+.search-input {
+    width: 500px;
+    padding: 24px;
+    font-size: 24px;
+    }
+
+button {
+    background-color: rgb(129, 255, 127);
+    padding: 12px;
+}
+
+header{
+    font-size: 36px;
+    margin-bottom: 20px
+}

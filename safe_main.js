@@ -1,10 +1,9 @@
 const baseURL = 'https://proxy-itunes-api.glitch.me/search?term='
+const rootElement = document.querySelector('.container')
 const form = document.querySelector('#search-form')
 const searchResults = document.querySelector('.search-results')
 // const player = document.querySelector('sample-player')
 
-
-// Add event listener to "submit" function on search
 form.addEventListener('submit', e => { 
     e.preventDefault()
     clearResults()
@@ -15,16 +14,16 @@ form.addEventListener('submit', e => {
 // Fetch data from itunes API with search input from user
 function search(){
     let searchInput = document.querySelector(".search-input").value;
-    let fetchURL = baseURL + searchInput + "&entity=song&limit=24"
+    let fetchURL = baseURL + searchInput + "&entity=song&limit=25"
     fetch(fetchURL) 
     .then(response => response.json())
     .then(data => {
         if (data.results.length > 0){
             renderAll(data.results)
-            console.log("results valid")
+            console.log("what the heck man")
         }
         else {
-            console.log("results invalid")
+            console.log("Input check running")
             catchInputError()
         }
         })
@@ -32,12 +31,15 @@ function search(){
         catchFetchError()) 
 };
 
-// Renders results from search onto the page
+
+
+
 function renderAll(array){
     for (object of array){
 
         const mainEl = document.createElement('div')
         mainEl.className        = 'song-card'
+        mainEl.id               = object.trackName //not sure if necessary
 
         const artistEl          = document.createElement('h2')
         artistEl.innerText      = object.artistName 
@@ -50,8 +52,6 @@ function renderAll(array){
 
         const albumImgEl        = document.createElement('img')
         albumImgEl.src          = object.artworkUrl100
-        albumImgEl.title        = "Album: " + object.collectionName
-        console.log(albumImgEl)
 
         const playButtonEl      = document.createElement('button')
         playButtonEl.innerText  = "Play Sample"
@@ -67,7 +67,7 @@ function renderAll(array){
         mainEl.appendChild(albumImgEl)
         mainEl.appendChild(trackEl)
         mainEl.appendChild(artistEl)
-        // mainEl.appendChild(albumEl)
+        mainEl.appendChild(albumEl)
         mainEl.appendChild(playButtonEl)
         // mainEl.appendChild(samplePlayer)
 
@@ -79,7 +79,6 @@ function renderAll(array){
     };
 }
 
-// Clears prior search results if new search input is entered
 function clearResults() {
     let mainElements = document.querySelectorAll('.song-card')
     for (let item of mainElements) {
@@ -87,21 +86,20 @@ function clearResults() {
     };
 }
 
-// Displays input error message
 function catchInputError(){
     const inputErrorEl = document.createElement('div')
     inputErrorEl.innerText = "No results found for this query"
     searchResults.appendChild(inputErrorEl)
 }
 
-// Displays fetch error message
+
 function catchFetchError(){
     const fetchErrorEl = document.createElement('div')
     fetchErrorEl.innerText = "Server Error- try again soon!"
     searchResults.appendChild(fetchErrorEl)
 }
 
-// Updates .m4a link for audio player to play
+
 function playSample(button, audioUrl){
     let audio = document.querySelector('audio')
     console.log(audio)
@@ -109,3 +107,5 @@ function playSample(button, audioUrl){
     console.log(audioUrl)
 }
 
+// default image (black square)
+// src="https://v.dreamwidth.org/8585989/234887" 

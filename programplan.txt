@@ -1,0 +1,22 @@
+make sure not sending anything until search term has been input (fix this)
+also- changed form settings thanks to Laura's suggetsion, that's why your placeholder stopped showing up
+
+
+order of things: 
+
+inside loop: 
+
+1. image of album (if no image/undefined? )
+2. song (album hover over if time)
+3. artist
+
+ 
+make it so default isn't automatic anymore
+
+how do we see variables/vals in developer tools? 
+
+To do:
+1. Code in error messages
+2. input validate (don't run til ready)
+
+
