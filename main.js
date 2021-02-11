@@ -2,7 +2,7 @@ const baseURL = 'https://itunes.apple.com/search?term='
 const rootElement = document.querySelector('.container')
 const form = document.querySelector('#search-form')
 const searchResults = document.querySelector('.search-results')
-const player = document.querySelector('sample-player')
+// const player = document.querySelector('sample-player')
 
 form.addEventListener('submit', e => { 
     e.preventDefault()
@@ -10,28 +10,26 @@ form.addEventListener('submit', e => {
     search()
 })
 
-let searchInput = document.querySelector("#search-bar")
 
 // Fetch data from itunes API with search input from user
 function search(){
     let searchInput = document.querySelector(".search-input").value;
-    let fetchURL = baseURL + searchInput + "&entity=song&limit=5"
+    let fetchURL = baseURL + searchInput + "&entity=song&limit=10"
     fetch(fetchURL) 
     .then(response => response.json())
     .then(data => {
-        console.log(data.results[2].artistName)
+        console.log(data.results[0].artistName)
+        console.log(data.results)
         renderAll(data.results)
         })
     .catch(error => 
         catchError())    
 };
 
-// Takes full function returned from fetch request, returns array composed of
-//  only the variables we might use
+
 function renderAll(array){
     for (object of array){
 
-//      Rendering section: 
         const mainEl = document.createElement('div')
         mainEl.className        = 'song-card'
         mainEl.id               = object.trackName //not sure if necessary
@@ -51,16 +49,25 @@ function renderAll(array){
         const playButtonEl      = document.createElement('button')
         playButtonEl.innerText  = "Play Sample"
 
+        
+        let audioUrl            = object.previewUrl
+        let samplePlayer        = document.createElement('div')
+        samplePlayer.className  = 'play-button'
+        samplePlayer.dataset.previewUrl = object.previewUrl
+        samplePlayer.appendChild(playButtonEl)
+
+
         mainEl.appendChild(albumImgEl)
         mainEl.appendChild(trackEl)
         mainEl.appendChild(artistEl)
         mainEl.appendChild(albumEl)
         mainEl.appendChild(playButtonEl)
+        mainEl.appendChild(samplePlayer)
 
         searchResults.appendChild(mainEl)
 
         playButtonEl.addEventListener('click', (event) => {
-            playSample(event.target)
+            playSample(event.target, audioUrl)
         })
     };
 }
@@ -78,11 +85,12 @@ function catchError(){
     searchResults.appendChild(errorEl)
 }
 
-function playSample(button){
-    let audioSample = document.querySelector('audio')
-    console.log(audioSample)
-    audioSample.src = button.parentElement.dataset.previewUrl
-    console.log(button.parentElement.dataset.previewUrl)
+function playSample(button, audioUrl){
+    let audio = document.querySelector('audio')
+    console.log(audio)
+    // audio.src = audioUrl
+    audio.src = audioUrl
+    console.log(audioUrl)
 }
 
 // default image (black square)
